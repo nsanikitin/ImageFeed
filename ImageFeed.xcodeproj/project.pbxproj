@@ -61,10 +61,10 @@
 				4FF74F422B49A56F00EFB524 /* ImageList */,
 				4FF74F392B46EEFD00EFB524 /* LaunchScreen.storyboard */,
 				4FF74F342B46EEFC00EFB524 /* Main.storyboard */,
-				4FF74F2E2B46EEFC00EFB524 /* AppDelegate.swift */,
-				4FF74F302B46EEFC00EFB524 /* SceneDelegate.swift */,
 				4FF74F372B46EEFD00EFB524 /* Assets.xcassets */,
 				4FF74F3C2B46EEFD00EFB524 /* Info.plist */,
+				4FF74F2E2B46EEFC00EFB524 /* AppDelegate.swift */,
+				4FF74F302B46EEFC00EFB524 /* SceneDelegate.swift */,
 			);
 			path = ImageFeed;
 			sourceTree = "<group>";
