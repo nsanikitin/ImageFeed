@@ -26,7 +26,6 @@ final class ImagesListCell: UITableViewCell {
         configureDateLabelGradient(with: gradientViewOfDateLabel)
     }
     
-    
     private func configureDateLabelGradient(with view: UIImageView) {
     
         let gradientLayer = CAGradientLayer()

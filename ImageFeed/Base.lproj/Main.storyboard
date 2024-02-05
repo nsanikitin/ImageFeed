@@ -205,9 +205,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="opG-FG-89X">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="krC-vw-i4t">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                            </imageView>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="opG-FG-89X">
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="132"/>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="opG-FG-89X" secondAttribute="trailing" id="BAR-XH-De3"/>
+                                    <constraint firstItem="opG-FG-89X" firstAttribute="top" secondItem="Irt-FK-Dh1" secondAttribute="top" id="U5T-d8-sMq"/>
+                                    <constraint firstAttribute="bottom" secondItem="opG-FG-89X" secondAttribute="bottom" id="nna-VR-eua"/>
+                                    <constraint firstItem="opG-FG-89X" firstAttribute="leading" secondItem="Irt-FK-Dh1" secondAttribute="leading" id="wUZ-nF-hya"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="u6c-u6-TbH"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="Irt-FK-Dh1"/>
+                                <connections>
+                                    <outlet property="delegate" destination="bWh-II-R1E" id="AvK-hS-b59"/>
+                                </connections>
+                            </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fnZ-p9-RiS">
                                 <rect key="frame" x="8" y="9" width="48" height="48"/>
                                 <constraints>
@@ -224,11 +240,11 @@
                         <viewLayoutGuide key="safeArea" id="oig-1d-JTy"/>
                         <color key="backgroundColor" name="YPBlack"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="opG-FG-89X" secondAttribute="trailing" id="7C4-gE-Hck"/>
-                            <constraint firstAttribute="bottom" secondItem="opG-FG-89X" secondAttribute="bottom" id="Ehd-nI-FZp"/>
-                            <constraint firstItem="opG-FG-89X" firstAttribute="leading" secondItem="8Tb-yK-iQM" secondAttribute="leading" id="J4Y-L8-4fp"/>
-                            <constraint firstItem="opG-FG-89X" firstAttribute="top" secondItem="8Tb-yK-iQM" secondAttribute="top" id="LWZ-aC-IBh"/>
+                            <constraint firstItem="krC-vw-i4t" firstAttribute="leading" secondItem="8Tb-yK-iQM" secondAttribute="leading" id="EKz-WO-oyd"/>
+                            <constraint firstAttribute="trailing" secondItem="krC-vw-i4t" secondAttribute="trailing" id="ZNe-Mt-Gqp"/>
+                            <constraint firstAttribute="bottom" secondItem="krC-vw-i4t" secondAttribute="bottom" id="bqc-T2-aSF"/>
                             <constraint firstItem="fnZ-p9-RiS" firstAttribute="leading" secondItem="oig-1d-JTy" secondAttribute="leading" constant="8" id="hVX-h8-eHB"/>
+                            <constraint firstItem="krC-vw-i4t" firstAttribute="top" secondItem="8Tb-yK-iQM" secondAttribute="top" id="hhi-9T-tQv"/>
                             <constraint firstItem="fnZ-p9-RiS" firstAttribute="top" secondItem="oig-1d-JTy" secondAttribute="top" constant="9" id="yYq-RV-Isf"/>
                         </constraints>
                     </view>
@@ -236,6 +252,7 @@
                     <connections>
                         <outlet property="backButton" destination="fnZ-p9-RiS" id="c3K-9O-gZN"/>
                         <outlet property="imageView" destination="opG-FG-89X" id="Z6e-Mz-9td"/>
+                        <outlet property="scrollView" destination="krC-vw-i4t" id="eH5-6p-0BP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="inn-Eb-AbR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
