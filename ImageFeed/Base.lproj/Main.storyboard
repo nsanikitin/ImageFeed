@@ -90,7 +90,6 @@
                                             <outlet property="dateLabel" destination="4Cb-7T-Wvv" id="52u-zY-1R0"/>
                                             <outlet property="gradientViewOfDateLabel" destination="mAz-aM-Xj2" id="w8e-Zx-ivy"/>
                                             <outlet property="likeButton" destination="87X-N8-Ffk" id="s5B-eh-Wtk"/>
-                                            <segue destination="bWh-II-R1E" kind="show" id="p5U-B3-xRp"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -112,6 +111,7 @@
                     <navigationItem key="navigationItem" id="45N-Qc-Xt9"/>
                     <connections>
                         <outlet property="tableView" destination="6ua-e3-khj" id="eew-yH-Iir"/>
+                        <segue destination="bWh-II-R1E" kind="presentation" identifier="ShowSingleImage" id="ULX-t0-O6D"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -200,32 +200,47 @@
         <!--Single Image View Controller-->
         <scene sceneID="8LA-vb-4AQ">
             <objects>
-                <viewController id="bWh-II-R1E" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="bWh-II-R1E" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8Tb-yK-iQM">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="opG-FG-89X">
-                                <rect key="frame" x="0.0" y="103" width="393" height="666"/>
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fnZ-p9-RiS">
+                                <rect key="frame" x="8" y="9" width="48" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="48" id="5sG-dR-Ngi"/>
+                                    <constraint firstAttribute="height" constant="48" id="kqt-MI-4cO"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="back_button"/>
+                                <connections>
+                                    <action selector="didTapeBackButton:" destination="bWh-II-R1E" eventType="touchUpInside" id="mHT-Jq-m4m"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="oig-1d-JTy"/>
                         <color key="backgroundColor" name="YPBlack"/>
                         <constraints>
-                            <constraint firstItem="oig-1d-JTy" firstAttribute="trailing" secondItem="opG-FG-89X" secondAttribute="trailing" id="7C4-gE-Hck"/>
-                            <constraint firstItem="oig-1d-JTy" firstAttribute="bottom" secondItem="opG-FG-89X" secondAttribute="bottom" id="Ehd-nI-FZp"/>
-                            <constraint firstItem="opG-FG-89X" firstAttribute="leading" secondItem="oig-1d-JTy" secondAttribute="leading" id="J4Y-L8-4fp"/>
-                            <constraint firstItem="opG-FG-89X" firstAttribute="top" secondItem="oig-1d-JTy" secondAttribute="top" id="LWZ-aC-IBh"/>
+                            <constraint firstAttribute="trailing" secondItem="opG-FG-89X" secondAttribute="trailing" id="7C4-gE-Hck"/>
+                            <constraint firstAttribute="bottom" secondItem="opG-FG-89X" secondAttribute="bottom" id="Ehd-nI-FZp"/>
+                            <constraint firstItem="opG-FG-89X" firstAttribute="leading" secondItem="8Tb-yK-iQM" secondAttribute="leading" id="J4Y-L8-4fp"/>
+                            <constraint firstItem="opG-FG-89X" firstAttribute="top" secondItem="8Tb-yK-iQM" secondAttribute="top" id="LWZ-aC-IBh"/>
+                            <constraint firstItem="fnZ-p9-RiS" firstAttribute="leading" secondItem="oig-1d-JTy" secondAttribute="leading" constant="8" id="hVX-h8-eHB"/>
+                            <constraint firstItem="fnZ-p9-RiS" firstAttribute="top" secondItem="oig-1d-JTy" secondAttribute="top" constant="9" id="yYq-RV-Isf"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="peu-RW-IBu"/>
                     <connections>
-                        <outlet property="singleImageView" destination="opG-FG-89X" id="enq-Lf-cTI"/>
+                        <outlet property="backButton" destination="fnZ-p9-RiS" id="c3K-9O-gZN"/>
+                        <outlet property="imageView" destination="opG-FG-89X" id="Z6e-Mz-9td"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="inn-Eb-AbR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="337" y="323"/>
+            <point key="canvasLocation" x="1169" y="-330"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="9L5-fH-RmO">
@@ -277,6 +292,7 @@
     <resources>
         <image name="0" width="200" height="132"/>
         <image name="avatar" width="70" height="70"/>
+        <image name="back_button" width="24" height="24"/>
         <image name="like_button_on" width="42" height="42"/>
         <image name="logout_button" width="24" height="24"/>
         <image name="tab_editorial_active" width="30" height="30"/>
