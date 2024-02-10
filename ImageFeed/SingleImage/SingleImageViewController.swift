@@ -2,6 +2,12 @@ import UIKit
 
 final class SingleImageViewController: UIViewController {
     
+    // MARK: - Outlets
+    
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet private weak var backButton: UIButton!
+    @IBOutlet private weak var imageView: UIImageView!
+    
     // MARK: - Properties
     
     var image: UIImage! {
@@ -13,16 +19,9 @@ final class SingleImageViewController: UIViewController {
         }
     }
     
-    // MARK: - Outlets
-    
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet private weak var backButton: UIButton!
-    @IBOutlet private weak var imageView: UIImageView!
-    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         
         imageView.image = image
@@ -35,7 +34,6 @@ final class SingleImageViewController: UIViewController {
     // MARK: - Methods
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
-        
         let minZoomScale = scrollView.minimumZoomScale
         let maxZoomScale = scrollView.maximumZoomScale
         view.layoutIfNeeded()
@@ -55,13 +53,11 @@ final class SingleImageViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction private func didTapeShareButton(_ sender: Any) {
-        
         let share = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         present(share, animated: true, completion: nil)
     }
     
     @IBAction private func didTapeBackButton(_ sender: Any) {
-        
         dismiss(animated: true, completion: nil)
     }
 }

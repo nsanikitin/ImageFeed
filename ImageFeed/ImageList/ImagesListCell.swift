@@ -16,7 +16,6 @@ final class ImagesListCell: UITableViewCell {
     // MARK: - Methods
     
     func configCell(image: UIImage?, date: String, isLiked: Bool) {
-
         cellImage.image = image
         dateLabel.text = date
         
@@ -27,7 +26,6 @@ final class ImagesListCell: UITableViewCell {
     }
     
     private func configureDateLabelGradient(with view: UIImageView) {
-    
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [UIColor.ypBlack.withAlphaComponent(0).cgColor,
                                 UIColor.ypBlack.withAlphaComponent(1).cgColor]
