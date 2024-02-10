@@ -156,6 +156,9 @@
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="logout_button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="logout_button"/>
+                                <connections>
+                                    <action selector="didTapeLogOutButton:" destination="dxf-fk-MYh" eventType="touchUpInside" id="aca-nE-Il2"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, world!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gi6-a2-TKM" userLabel="User Description Label">
                                 <rect key="frame" x="16" y="228.33333333333334" width="76" height="16"/>
@@ -186,7 +189,6 @@
                     <tabBarItem key="tabBarItem" title="" image="tab_profile_active" id="9kQ-Ev-Rfl"/>
                     <connections>
                         <outlet property="logOutButton" destination="DbF-y9-nFL" id="PB0-bQ-chV"/>
-                        <outlet property="logOutButtonDidTape" destination="DbF-y9-nFL" id="INi-EO-RTF"/>
                         <outlet property="userAvatarImage" destination="asa-eZ-0rF" id="YHL-1E-vu7"/>
                         <outlet property="userDescriptionLabel" destination="Gi6-a2-TKM" id="ifG-Ei-wXB"/>
                         <outlet property="userLoginLabel" destination="OGe-sh-P6D" id="acp-7K-rrE"/>
@@ -195,7 +197,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KW8-WH-vhy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-589" y="323"/>
+            <point key="canvasLocation" x="-590.07633587786256" y="322.53521126760563"/>
         </scene>
         <!--Single Image View Controller-->
         <scene sceneID="8LA-vb-4AQ">
@@ -208,15 +210,15 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="krC-vw-i4t">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="opG-FG-89X">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="200" placeholderIntrinsicHeight="132" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="opG-FG-89X">
                                         <rect key="frame" x="0.0" y="0.0" width="200" height="132"/>
                                     </imageView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="opG-FG-89X" secondAttribute="trailing" id="BAR-XH-De3"/>
-                                    <constraint firstItem="opG-FG-89X" firstAttribute="top" secondItem="Irt-FK-Dh1" secondAttribute="top" id="U5T-d8-sMq"/>
+                                    <constraint firstItem="opG-FG-89X" firstAttribute="top" secondItem="krC-vw-i4t" secondAttribute="top" id="U5T-d8-sMq"/>
                                     <constraint firstAttribute="bottom" secondItem="opG-FG-89X" secondAttribute="bottom" id="nna-VR-eua"/>
-                                    <constraint firstItem="opG-FG-89X" firstAttribute="leading" secondItem="Irt-FK-Dh1" secondAttribute="leading" id="wUZ-nF-hya"/>
+                                    <constraint firstItem="opG-FG-89X" firstAttribute="leading" secondItem="krC-vw-i4t" secondAttribute="leading" id="wUZ-nF-hya"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="u6c-u6-TbH"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="Irt-FK-Dh1"/>
@@ -236,16 +238,26 @@
                                     <action selector="didTapeBackButton:" destination="bWh-II-R1E" eventType="touchUpInside" id="mHT-Jq-m4m"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KEM-uq-QbI" userLabel="Sharing Button">
+                                <rect key="frame" x="171" y="766" width="51" height="50"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="sharing_button"/>
+                                <connections>
+                                    <action selector="didTapeShareButton:" destination="bWh-II-R1E" eventType="touchUpInside" id="MO1-K6-hmK"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="oig-1d-JTy"/>
                         <color key="backgroundColor" name="YPBlack"/>
                         <constraints>
                             <constraint firstItem="krC-vw-i4t" firstAttribute="leading" secondItem="8Tb-yK-iQM" secondAttribute="leading" id="EKz-WO-oyd"/>
+                            <constraint firstItem="KEM-uq-QbI" firstAttribute="centerX" secondItem="8Tb-yK-iQM" secondAttribute="centerX" id="MAN-Vm-kbc"/>
                             <constraint firstAttribute="trailing" secondItem="krC-vw-i4t" secondAttribute="trailing" id="ZNe-Mt-Gqp"/>
                             <constraint firstAttribute="bottom" secondItem="krC-vw-i4t" secondAttribute="bottom" id="bqc-T2-aSF"/>
                             <constraint firstItem="fnZ-p9-RiS" firstAttribute="leading" secondItem="oig-1d-JTy" secondAttribute="leading" constant="8" id="hVX-h8-eHB"/>
                             <constraint firstItem="krC-vw-i4t" firstAttribute="top" secondItem="8Tb-yK-iQM" secondAttribute="top" id="hhi-9T-tQv"/>
                             <constraint firstItem="fnZ-p9-RiS" firstAttribute="top" secondItem="oig-1d-JTy" secondAttribute="top" constant="9" id="yYq-RV-Isf"/>
+                            <constraint firstItem="oig-1d-JTy" firstAttribute="bottom" secondItem="KEM-uq-QbI" secondAttribute="bottom" constant="36" id="yhk-Pz-4ef"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="peu-RW-IBu"/>
@@ -257,7 +269,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="inn-Eb-AbR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1169" y="-330"/>
+            <point key="canvasLocation" x="1168.7022900763359" y="-330.28169014084511"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="9L5-fH-RmO">
@@ -312,6 +324,7 @@
         <image name="back_button" width="24" height="24"/>
         <image name="like_button_on" width="42" height="42"/>
         <image name="logout_button" width="24" height="24"/>
+        <image name="sharing_button" width="51" height="50"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YPBlack">

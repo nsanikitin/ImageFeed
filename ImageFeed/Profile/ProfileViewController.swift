@@ -12,5 +12,7 @@ final class ProfileViewController: UIViewController {
 
     // MARK: - Actions
     
-    @IBOutlet weak var logOutButtonDidTape: UIButton!
+    @IBAction private func didTapeLogOutButton() {
+        
+    }
 }
