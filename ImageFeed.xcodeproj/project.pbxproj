@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4FC19F052B78F9290079CE9E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC19F042B78F9290079CE9E /* Constants.swift */; };
 		4FCB49B12B66CAD30041F2E3 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCB49B02B66CAD30041F2E3 /* ProfileViewController.swift */; };
 		4FCB49B72B66F6FB0041F2E3 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCB49B62B66F6FB0041F2E3 /* SingleImageViewController.swift */; };
 		4FF74F2F2B46EEFC00EFB524 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF74F2E2B46EEFC00EFB524 /* AppDelegate.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4FC19F042B78F9290079CE9E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		4FCB49B02B66CAD30041F2E3 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		4FCB49B62B66F6FB0041F2E3 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		4FF74F2B2B46EEFC00EFB524 /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,6 +80,7 @@
 		4FF74F2D2B46EEFC00EFB524 /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
+				4FC19F042B78F9290079CE9E /* Constants.swift */,
 				4FCB49B22B66CB880041F2E3 /* Profile */,
 				4FCB49B52B66F6E80041F2E3 /* SingleImage */,
 				4FF74F422B49A56F00EFB524 /* ImageList */,
@@ -175,6 +178,7 @@
 				4FF74F462B4C56ED00EFB524 /* ImagesListCell.swift in Sources */,
 				4FCB49B12B66CAD30041F2E3 /* ProfileViewController.swift in Sources */,
 				4FF74F2F2B46EEFC00EFB524 /* AppDelegate.swift in Sources */,
+				4FC19F052B78F9290079CE9E /* Constants.swift in Sources */,
 				4FCB49B72B66F6FB0041F2E3 /* SingleImageViewController.swift in Sources */,
 				4FF74F312B46EEFC00EFB524 /* SceneDelegate.swift in Sources */,
 			);
