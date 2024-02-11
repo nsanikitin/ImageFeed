@@ -4,11 +4,11 @@ final class ProfileViewController: UIViewController {
     
     // MARK: - Properties
     
-    private var userAvatarImage: UIImageView = UIImageView()
-    private var userNameLabel: UILabel = UILabel()
-    private var userLoginLabel: UILabel = UILabel()
-    private var userDescriptionLabel: UILabel = UILabel()
-    private var logOutButton: UIButton = UIButton()
+    private lazy var userAvatarImage: UIImageView = UIImageView()
+    private lazy var userNameLabel: UILabel = UILabel()
+    private lazy var userLoginLabel: UILabel = UILabel()
+    private lazy var userDescriptionLabel: UILabel = UILabel()
+    private lazy var logOutButton: UIButton = UIButton()
     
     // MARK: - Lifecycle
     
