@@ -91,6 +91,6 @@ final class ProfileViewController: UIViewController {
     
     @objc 
     private func didTapeLogOutButton() {
-        print("Log Out")
+        
     }
 }
