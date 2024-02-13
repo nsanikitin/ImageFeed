@@ -9,10 +9,11 @@ final class WebViewViewController: UIViewController {
     
     // MARK: - Outlets
     
+    @IBOutlet private weak var progressView: UIProgressView!
     @IBOutlet private weak var backButton: UIButton!
     @IBOutlet private weak var webView: WKWebView!
     
-    // MARK: - Lyfecycle
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         
