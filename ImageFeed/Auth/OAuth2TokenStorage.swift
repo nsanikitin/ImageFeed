@@ -5,17 +5,14 @@ final class OAuth2TokenStorage {
     // MARK: - Properties
     
     private let userDefaults = UserDefaults.standard
-    
-    private enum Keys: String {
-        case accessToken
-    }
+    private let accessToken = ""
     
     var token: String? {
         get {
-            userDefaults.string(forKey: Keys.accessToken.rawValue)
+            userDefaults.string(forKey: accessToken)
         }
         set {
-            userDefaults.set(newValue, forKey: Keys.accessToken.rawValue)
+            userDefaults.set(newValue, forKey: accessToken)
         }
     }
 }
