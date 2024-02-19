@@ -4,15 +4,16 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
     
     // MARK: - Properties
     
-    private let ShowWebViewViewControllerIdentifier = "ShowWebView"
+    private let showWebViewViewControllerIdentifier = "ShowWebView"
+    weak var delegate: AuthViewControllerDelegate?
     
     // MARK: - Methods
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowWebViewViewControllerIdentifier {
+        if segue.identifier == showWebViewViewControllerIdentifier {
             guard let webViewViewController = segue.destination as? WebViewViewController
             else {
-                fatalError("Failed to prepare for \(ShowWebViewViewControllerIdentifier)")
+                fatalError("Failed to prepare for \(showWebViewViewControllerIdentifier)")
             }
             webViewViewController.delegate = self
             
@@ -23,7 +24,7 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
     }
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        // TODO: - Code
+        delegate?.authViewController(self, didAuthenticateWithCode: code)
     }
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {

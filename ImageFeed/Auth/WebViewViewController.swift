@@ -18,20 +18,8 @@ final class WebViewViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
-        
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: AccessKey),
-            URLQueryItem(name: "redirect_uri", value: RedirectURI),
-            URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: AccessScope)
-        ]
-        let url = urlComponents.url!
-        
-        let request = URLRequest(url: url)
-        webView.load(request)
-        
         webView.navigationDelegate = self
+        webViewLoading()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -71,9 +59,24 @@ final class WebViewViewController: UIViewController {
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
     
+    private func webViewLoading() {
+        var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
+        
+        urlComponents.queryItems = [
+            URLQueryItem(name: "client_id", value: AccessKey),
+            URLQueryItem(name: "redirect_uri", value: RedirectURI),
+            URLQueryItem(name: "response_type", value: "code"),
+            URLQueryItem(name: "scope", value: AccessScope)
+        ]
+        let url = urlComponents.url!
+        
+        let request = URLRequest(url: url)
+        webView.load(request)
+    }
+    
     // MARK: - Actions
     
-    @IBAction func didTapeBackButton(_ sender: Any) {
+    @IBAction private func didTapeBackButton(_ sender: Any) {
         delegate?.webViewViewControllerDidCancel(self)
     }
 }
@@ -81,13 +84,14 @@ final class WebViewViewController: UIViewController {
 // MARK: - Extensions
 
 extension WebViewViewController: WKNavigationDelegate {
+    
     func webView(
         _ webView: WKWebView,
         decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
         if let code = code(from: navigationAction) {
-            // TODO: - Process code
+            delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel)
         } else {
             decisionHandler(.allow)
