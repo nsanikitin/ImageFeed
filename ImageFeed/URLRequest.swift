@@ -9,6 +9,11 @@ extension URLRequest {
     ) -> URLRequest {
         var request = URLRequest(url: URL(string: path, relativeTo: baseURL)!)
         request.httpMethod = httpMethod
+        
+        if let token = OAuth2TokenStorage().token {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        
         return request
     }
 }

@@ -1,5 +1,4 @@
 import UIKit
-import ProgressHUD
 
 final class SplashViewController: UIViewController {
     
@@ -7,7 +6,9 @@ final class SplashViewController: UIViewController {
     
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let oauth2Service = OAuth2Service()
-    private let oauth2TokenStorage = OAuth2TokenStorage()
+    private let storage = OAuth2TokenStorage()
+    private let profileService = ProfileService()
+    private let profileImageService = ProfileImageService.shared
     
     // MARK: - Lifecycle
     
@@ -20,7 +21,7 @@ final class SplashViewController: UIViewController {
     // MARK: - Methods
     
     private func switchToAuthOrImageList() {
-        if oauth2TokenStorage.token != nil {
+        if storage.token != nil {
             switchToTabBarController()
         } else {
             performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
@@ -61,6 +62,7 @@ extension SplashViewController {
 }
 
 extension SplashViewController: AuthViewControllerDelegate {
+    
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
@@ -78,6 +80,34 @@ extension SplashViewController: AuthViewControllerDelegate {
             switch result {
             case .success:
                 self.switchToTabBarController()
+            case .failure:
+                break
+            }
+        }
+    }
+    
+    func didAuthenticate(_ vc: AuthViewController) {
+        vc.dismiss(animated: true)
+        
+        guard let token = storage.token else {
+            return
+        }
+        
+        fetchProfile(token)
+    }
+    
+    private func fetchProfile(_ token: String) {
+        UIBlockingProgressHUD.show()
+        profileService.fetchProfile(token) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let user):
+                self.profileImageService.fetchProfileImageURL(username: user.username, token: token) { _ in }
+                self.switchToTabBarController()
+                
             case .failure:
                 break
             }

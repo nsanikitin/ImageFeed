@@ -39,6 +39,7 @@ final class OAuth2Service {
         lastCode = code
         
         guard let request = authTokenRequest(code: code)  else {
+            assertionFailure("Invalid request")
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
@@ -53,6 +54,7 @@ final class OAuth2Service {
                         self.authToken = authToken
                         completion(.success(authToken))
                     case .failure(let error):
+                        assertionFailure("Invalid request")
                         completion(.failure(error))
                     }
                 }
@@ -70,6 +72,7 @@ final class OAuth2Service {
         completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void
     ) -> URLSessionTask {
         let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
         return urlSession.data(for: request) { (result: Result<Data, Error>) in
             let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
                 Result { try decoder.decode(OAuthTokenResponseBody.self, from: data) }

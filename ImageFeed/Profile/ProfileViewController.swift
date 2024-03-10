@@ -9,20 +9,36 @@ final class ProfileViewController: UIViewController {
     private lazy var userLoginLabel: UILabel = UILabel()
     private lazy var userDescriptionLabel: UILabel = UILabel()
     private lazy var logOutButton: UIButton = UIButton()
+    private let profileService = ProfileService.shared
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+        
+        guard let profile = profileService.profile else {
+            assertionFailure("Profile Data is invalid")
+            return
+        }
+        
+        updateProfileDetails(profile: profile)
         
         configureUserAvatarImage(avatarImage: UIImage(named: "avatar")!)
-        configureUserNameLabel(withText: "Екатерина Новикова")
-        configureUserLoginLabel(withText: "@ekaterina_nov")
-        configureUserDescriptionLabel(withText: "Hello, world!")
+        configureUserNameLabel()
+        configureUserLoginLabel()
+        configureUserDescriptionLabel()
         configureLogOutButton(imageForButton: UIImage(named: "logout_button")!)
     }
     
     // MARK: - Methods
+    
+    private func updateProfileDetails(profile: Profile) {
+        self.userNameLabel.text = profile.name
+        self.userLoginLabel.text = profile.loginName
+        self.userDescriptionLabel.text = profile.bio
+
+    }
     
     private func configureUserAvatarImage(avatarImage: UIImage) {
         userAvatarImage = UIImageView(image: avatarImage)
@@ -36,8 +52,7 @@ final class ProfileViewController: UIViewController {
         userAvatarImage.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
     }
     
-    private func configureUserNameLabel(withText name: String) {
-        userNameLabel.text = name
+    private func configureUserNameLabel() {
         userNameLabel.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         userNameLabel.textColor = .ypWhite
         
@@ -48,8 +63,7 @@ final class ProfileViewController: UIViewController {
         userNameLabel.leadingAnchor.constraint(equalTo: userAvatarImage.leadingAnchor).isActive = true
     }
     
-    private func configureUserLoginLabel(withText login: String) {
-        userLoginLabel.text = login
+    private func configureUserLoginLabel() {
         userLoginLabel.font = UIFont.systemFont(ofSize: 13)
         userLoginLabel.textColor = .ypGray
         
@@ -60,8 +74,7 @@ final class ProfileViewController: UIViewController {
         userLoginLabel.leadingAnchor.constraint(equalTo: userAvatarImage.leadingAnchor).isActive = true
     }
     
-    private func configureUserDescriptionLabel(withText description: String) {
-        userDescriptionLabel.text = description
+    private func configureUserDescriptionLabel() {
         userDescriptionLabel.font = UIFont.systemFont(ofSize: 13)
         userDescriptionLabel.textColor = .ypWhite
         
@@ -89,8 +102,8 @@ final class ProfileViewController: UIViewController {
         logOutButton.centerYAnchor.constraint(equalTo: userAvatarImage.centerYAnchor).isActive = true
     }
     
-    @objc 
+    @objc
     private func didTapeLogOutButton() {
-        
+        // TODO: - Add action "exit" from the profile
     }
 }
