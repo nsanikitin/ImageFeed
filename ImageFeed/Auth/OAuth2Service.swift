@@ -46,9 +46,9 @@ final class OAuth2Service {
         
         let task = urlSession.dataTask(with: request) { [weak self] data, response, error in
             DispatchQueue.main.async {
-                let task = self?.object(for: request) { [weak self] result in
+                let task = self?.objectTask(for: request) { [weak self] (response: Result<OAuthTokenResponseBody, Error>) in
                     guard let self = self else { return }
-                    switch result {
+                    switch response {
                     case .success(let body):
                         let authToken = body.accessToken
                         self.authToken = authToken
