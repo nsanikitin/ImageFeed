@@ -39,45 +39,25 @@ final class OAuth2Service {
         lastCode = code
         
         guard let request = authTokenRequest(code: code)  else {
-            assertionFailure("Invalid request")
-            completion(.failure(AuthServiceError.invalidRequest))
+            assertionFailure("Invalid auth request")
             return
         }
         
-        let task = urlSession.dataTask(with: request) { [weak self] data, response, error in
-            DispatchQueue.main.async {
-                let task = self?.objectTask(for: request) { [weak self] (response: Result<OAuthTokenResponseBody, Error>) in
-                    guard let self = self else { return }
-                    switch response {
-                    case .success(let body):
-                        let authToken = body.accessToken
-                        self.authToken = authToken
-                        completion(.success(authToken))
-                    case .failure(let error):
-                        assertionFailure("Invalid request")
-                        completion(.failure(error))
-                    }
-                }
-                self?.task = nil
-                self?.lastCode = nil
+        let task = urlSession.objectTask(for: request) { [weak self] (response: Result<OAuthTokenResponseBody, Error>) in
+            guard let self = self else { return }
+            
+            switch response {
+            case .success(let body):
+                let authToken = body.accessToken
+                self.authToken = authToken
+                completion(.success(authToken))
+            case .failure(let error):
+                print("[OAuth2Service]: \(error.localizedDescription) \(request)")
+                completion(.failure(error))
             }
-        }
-        
-        self.task = task
-        task.resume()
-    }
-    
-    private func object(
-        for request: URLRequest,
-        completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void
-    ) -> URLSessionTask {
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        return urlSession.data(for: request) { (result: Result<Data, Error>) in
-            let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
-                Result { try decoder.decode(OAuthTokenResponseBody.self, from: data) }
-            }
-            completion(response)
+            
+            self.task = nil
+            self.lastCode = nil
         }
     }
     
@@ -92,15 +72,5 @@ final class OAuth2Service {
             httpMethod: "POST",
             baseURL: Constants.defaultBaseURL
         )
-    }
-    
-    private func makeOAuthTokenRequest(code: String) -> URLRequest? {
-        guard let url = URL(string: "...\(code)") else {
-            assertionFailure("Failed to create URL")
-            return nil
-        }
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        return request
     }
 }

@@ -1,9 +1,5 @@
 import Foundation
 
-enum ProfileServiceError: Error {
-    case invalidRequest
-}
-
 final class ProfileService {
     
     // MARK: - Properties
@@ -21,53 +17,44 @@ final class ProfileService {
     ) {
         assert(Thread.isMainThread)
         
+        if task != nil {
+            task?.cancel()
+        }
+        
         guard let request = profileRequest(token: token)  else {
-            assertionFailure("Invalid request")
-            completion(.failure(ProfileServiceError.invalidRequest))
+            assertionFailure("Invalid profile request")
             return
         }
         
-        let task = urlSession.dataTask(with: request) { [weak self] data, response, error  in
-            DispatchQueue.main.async {
-                let task = self?.object(for: request) { [weak self] result in
-                    guard let self = self else { return }
-                    switch result {
-                    case .success(let profileResult):
-                        let profile = Profile(result: profileResult)
-                        completion(.success(profile))
-                    case .failure(let error):
-                        assertionFailure("Invalid request")
-                        completion(.failure(error))
-                    }
-                }
-                
-                self?.task = nil
+        let task = urlSession.objectTask(for: request) { [weak self] (response: Result<ProfileResult, Error>) in
+            guard let self = self else { return }
+            
+            switch response {
+            case .success(let body):
+                let profile = Profile(username: body.username,
+                                      name: "\(body.firstName ?? "") " + "\(body.lastName ?? "")",
+                                      loginName: "@\(body.username)",
+                                      bio: body.bio ?? "Описание отсутствует"
+                )
+                self.profile = profile
+                completion(.success((profile)))
+            case .failure(let error):
+                assertionFailure("[ProfileService]: \(error.localizedDescription) \(request)")
+                completion(.failure(error))
             }
-        }
-        
-        self.task = task
-        task.resume()
-    }
-    
-    private func object(
-        for request: URLRequest,
-        completion: @escaping (Result<ProfileResult, Error>) -> Void
-    ) -> URLSessionTask {
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        return urlSession.data(for: request) { (result: Result<Data, Error>) in
-            let response = result.flatMap { data -> Result<ProfileResult, Error> in
-                Result { try decoder.decode(ProfileResult.self, from: data) }
-            }
-            completion(response)
+            
+            self.task = nil
         }
     }
     
     private func profileRequest(token: String) -> URLRequest? {
-        URLRequest.makeHTTPRequest(
+        var request = URLRequest.makeHTTPRequest(
             path: "/me",
             httpMethod: "GET",
             baseURL: Constants.defaultApiBaseURL
         )
+        request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        return request
     }
 }

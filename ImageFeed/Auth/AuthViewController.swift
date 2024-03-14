@@ -14,9 +14,8 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
         if segue.identifier == showWebViewViewControllerIdentifier {
             guard let webViewViewController = segue.destination as? WebViewViewController
             else {
+                showAlertError()
                 fatalError("Failed to prepare for \(showWebViewViewControllerIdentifier)")
-                
-                // TODO: Show Alert
             }
             webViewViewController.delegate = self
             
@@ -26,14 +25,6 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
         
     }
     
-    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        delegate?.authViewController(self, didAuthenticateWithCode: code)
-    }
-    
-    func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
-        dismiss(animated: true)
-    }
-    
     func showAlertError() {
         alertPresenter = AlertPresenter(viewController: self)
         
@@ -41,12 +32,19 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
             title: "Что-то пошло не так(",
             message: "Не удалось войти в систему",
             buttonText: "Ок",
-            completion: { [weak self] in
-                guard let self = self else { return }
-                self.presenter.restartGame()
+            completion: {
+                return
             }
         )
         
         alertPresenter?.showAlert(alertModel: alertModel)
+    }
+    
+    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+        delegate?.authViewController(self, didAuthenticateWithCode: code)
+    }
+    
+    func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
+        dismiss(animated: true)
     }
 }

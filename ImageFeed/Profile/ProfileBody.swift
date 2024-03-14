@@ -26,15 +26,3 @@ struct ImageURL: Codable {
     let medium: String?
     let large: String?
 }
-
-extension Profile {
-    
-    init(result profile: ProfileResult) {
-        self.init(
-            username: profile.username,
-            name: "\(profile.firstName ?? "") " + "\(profile.lastName ?? "")",
-            loginName: "@\(profile.username)",
-            bio: profile.bio ?? ""
-        )
-    }
-}

@@ -1,43 +1,75 @@
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
     // MARK: - Properties
     
+    private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
     private lazy var userAvatarImage: UIImageView = UIImageView()
     private lazy var userNameLabel: UILabel = UILabel()
     private lazy var userLoginLabel: UILabel = UILabel()
     private lazy var userDescriptionLabel: UILabel = UILabel()
     private lazy var logOutButton: UIButton = UIButton()
-    private let profileService = ProfileService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
-        
-        guard let profile = profileService.profile else {
-            assertionFailure("Profile Data is invalid")
-            return
-        }
-        
-        updateProfileDetails(profile: profile)
         
         configureUserAvatarImage(avatarImage: UIImage(named: "avatar")!)
         configureUserNameLabel()
         configureUserLoginLabel()
         configureUserDescriptionLabel()
         configureLogOutButton(imageForButton: UIImage(named: "logout_button")!)
+        
+        guard let profile = profileService.profile else {
+            assertionFailure("Profile Data is invalid")
+            return
+        }
+        
+        updateProfileData(profile: profile)
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] notification in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        
+        updateAvatar()
     }
     
     // MARK: - Methods
-    
-    private func updateProfileDetails(profile: Profile) {
+
+    private func updateProfileData(profile: Profile) {
         self.userNameLabel.text = profile.name
         self.userLoginLabel.text = profile.loginName
         self.userDescriptionLabel.text = profile.bio
-
+        
+    }
+        
+    private func updateAvatar() {
+        guard let profileImageURL = profileImageService.avatarURL,
+              let url = URL(string: profileImageURL) else { return }
+        
+        userAvatarImage.kf.indicatorType = .activity
+        let processor = RoundCornerImageProcessor(cornerRadius: 70)
+        userAvatarImage.kf.setImage(with: url,
+                                    placeholder: UIImage(systemName: "person.crop.circle.fill"),
+                                    options: [.processor(processor)]) { result in
+            switch result {
+            case .success(let value):
+                print("Image is loaded: \(value.image)")
+            case .failure(let error):
+                print("Image is not loaded, error is: \(error)")
+            }
+        }
     }
     
     private func configureUserAvatarImage(avatarImage: UIImage) {
