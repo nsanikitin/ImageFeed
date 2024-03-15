@@ -4,7 +4,7 @@ import SwiftKeychainWrapper
 final class OAuth2TokenStorage {
     
     // MARK: - Properties
-    
+
     private let keychainWrapper = KeychainWrapper.standard
     private let accessToken = ""
     

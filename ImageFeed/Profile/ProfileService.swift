@@ -39,7 +39,7 @@ final class ProfileService {
                 self.profile = profile
                 completion(.success((profile)))
             case .failure(let error):
-                assertionFailure("[ProfileService]: \(error.localizedDescription) \(request)")
+                print("[ProfileService]: \(error.localizedDescription) \(request)")
                 completion(.failure(error))
             }
             

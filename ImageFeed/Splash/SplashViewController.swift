@@ -11,6 +11,7 @@ final class SplashViewController: UIViewController {
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
     private var screenLogoImageView = UIImageView()
+    private var alertPresenter: AlertPresenter?
     
     // MARK: - Lifecycle
     
@@ -51,6 +52,19 @@ final class SplashViewController: UIViewController {
         window.rootViewController = tabBarController
     }
     
+    func showAlertError() {
+        alertPresenter = AlertPresenter(viewController: self)
+        
+        let alertModel = AlertModel(
+            title: "Что-то пошло не так(",
+            message: "Не удалось войти в систему",
+            buttonText: "Ок",
+            completion: nil
+        )
+        
+        alertPresenter?.showAlert(alertModel: alertModel)
+    }
+    
     private func addScreenLogoImageView() {
         screenLogoImageView.image = UIImage(named: "splash_screen_logo")
         
@@ -85,6 +99,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             case .success(let token):
                 self.fetchProfile(token)
             case .failure:
+                self.showAlertError()
                 break
             }
         }
@@ -114,6 +129,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.switchToTabBarController()
                 
             case .failure:
+                self.showAlertError()
                 break
             }
         }
