@@ -32,9 +32,7 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
             title: "Что-то пошло не так(",
             message: "Не удалось войти в систему",
             buttonText: "Ок",
-            completion: {
-                return
-            }
+            completion: nil
         )
         
         alertPresenter?.showAlert(alertModel: alertModel)

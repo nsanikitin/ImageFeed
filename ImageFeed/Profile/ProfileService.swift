@@ -32,9 +32,9 @@ final class ProfileService {
             switch response {
             case .success(let body):
                 let profile = Profile(username: body.username,
-                                      name: "\(body.firstName ?? "") " + "\(body.lastName ?? "")",
+                                      name: "\(body.firstName) " + "\(body.lastName ?? "")",
                                       loginName: "@\(body.username)",
-                                      bio: body.bio ?? "Описание отсутствует"
+                                      bio: body.bio ?? ""
                 )
                 self.profile = profile
                 completion(.success((profile)))

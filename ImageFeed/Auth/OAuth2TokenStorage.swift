@@ -16,7 +16,8 @@ final class OAuth2TokenStorage {
             guard let newValue = newValue else { return }
             let isSuccess = keychainWrapper.set(newValue, forKey: accessToken)
             guard isSuccess else {
-                fatalError("A token is not saved!")
+                assertionFailure("A token is not saved!")
+                return
             }
         }
     }
