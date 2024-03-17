@@ -43,7 +43,8 @@ final class SplashViewController: UIViewController {
     
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else {
-            fatalError("Invalid Configuration")
+            assertionFailure("Invalid Configuration")
+            return
         }
         
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
@@ -83,6 +84,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
+            
             self.fetchOAuthToken(code)
         }
     }
@@ -94,6 +96,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             
             UIBlockingProgressHUD.dismiss()
+            dismiss(animated: true)
             
             switch result {
             case .success(let token):
@@ -105,29 +108,18 @@ extension SplashViewController: AuthViewControllerDelegate {
         }
     }
     
-    func didAuthenticate(_ vc: AuthViewController) {
-        vc.dismiss(animated: true)
-        
-        guard let token = storage.token else {
-            return
-        }
-        
-        fetchProfile(token)
-    }
-    
     private func fetchProfile(_ token: String) {
         UIBlockingProgressHUD.show()
         
         profileService.fetchProfile(token) { [weak self] result in
-            UIBlockingProgressHUD.dismiss()
-            
             guard let self = self else { return }
+            
+            UIBlockingProgressHUD.dismiss()
             
             switch result {
             case .success(let user):
                 self.profileImageService.fetchProfileImageURL(username: user.username, token: token) { _ in }
                 self.switchToTabBarController()
-                
             case .failure:
                 self.showAlertError()
                 break
