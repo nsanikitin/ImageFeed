@@ -60,7 +60,10 @@ final class WebViewViewController: UIViewController {
     }
     
     private func webViewLoading() {
-        var urlComponents = URLComponents(string: Constants.unsplashAuthorizeURLString)!
+        guard var urlComponents = URLComponents(string: Constants.unsplashAuthorizeURLString) else {
+            assertionFailure("Authorize URL is not exist")
+            return
+        }
         
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: Constants.accessKey),

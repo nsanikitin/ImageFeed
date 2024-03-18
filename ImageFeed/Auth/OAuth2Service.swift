@@ -1,11 +1,17 @@
 import Foundation
 
+enum AuthServiceError: Error {
+    case invalidRequest
+}
+
 final class OAuth2Service {
     
     // MARK: - Properties
     
     static let shared = OAuth2Service()
     private let urlSession = URLSession.shared
+    private var task: URLSessionTask?
+    private var lastCode: String?
     
     private (set) var authToken: String? {
         get {
@@ -22,35 +28,40 @@ final class OAuth2Service {
         _ code: String,
         completion: @escaping (Result<String, Error>) -> Void
     ) {
-        let request = authTokenRequest(code: code)
-        let task = object(for: request) { [weak self] result in
+        assert(Thread.isMainThread)
+        
+        guard lastCode != code else {
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        
+        task?.cancel()
+        lastCode = code
+        
+        guard let request = authTokenRequest(code: code)  else {
+            assertionFailure("Invalid auth request")
+            return
+        }
+        
+        let task = urlSession.objectTask(for: request) { [weak self] (response: Result<OAuthTokenResponseBody, Error>) in
             guard let self = self else { return }
-            switch result {
+            
+            switch response {
             case .success(let body):
                 let authToken = body.accessToken
                 self.authToken = authToken
                 completion(.success(authToken))
             case .failure(let error):
+                print("[OAuth2Service]: \(error.localizedDescription) \(request)")
                 completion(.failure(error))
             }
-        }
-        task.resume()
-    }
-    
-    private func object(
-        for request: URLRequest,
-        completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void
-    ) -> URLSessionTask {
-        let decoder = JSONDecoder()
-        return urlSession.data(for: request) { (result: Result<Data, Error>) in
-            let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
-                Result { try decoder.decode(OAuthTokenResponseBody.self, from: data) }
-            }
-            completion(response)
+            
+            self.task = nil
+            self.lastCode = nil
         }
     }
     
-    private func authTokenRequest(code: String) -> URLRequest {
+    private func authTokenRequest(code: String) -> URLRequest? {
         URLRequest.makeHTTPRequest(
             path: "/oauth/token"
             + "?client_id=\(Constants.accessKey)"

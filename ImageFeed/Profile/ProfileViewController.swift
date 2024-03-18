@@ -1,14 +1,18 @@
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
     // MARK: - Properties
     
+    private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
     private lazy var userAvatarImage: UIImageView = UIImageView()
     private lazy var userNameLabel: UILabel = UILabel()
     private lazy var userLoginLabel: UILabel = UILabel()
     private lazy var userDescriptionLabel: UILabel = UILabel()
     private lazy var logOutButton: UIButton = UIButton()
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     // MARK: - Lifecycle
     
@@ -16,13 +20,57 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         
         configureUserAvatarImage(avatarImage: UIImage(named: "avatar")!)
-        configureUserNameLabel(withText: "Екатерина Новикова")
-        configureUserLoginLabel(withText: "@ekaterina_nov")
-        configureUserDescriptionLabel(withText: "Hello, world!")
+        configureUserNameLabel()
+        configureUserLoginLabel()
+        configureUserDescriptionLabel()
         configureLogOutButton(imageForButton: UIImage(named: "logout_button")!)
+        
+        guard let profile = profileService.profile else {
+            assertionFailure("Profile Data is invalid")
+            return
+        }
+        
+        updateProfileData(profile: profile)
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] notification in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        
+        updateAvatar()
     }
     
     // MARK: - Methods
+
+    private func updateProfileData(profile: Profile) {
+        self.userNameLabel.text = profile.name
+        self.userLoginLabel.text = profile.loginName
+        self.userDescriptionLabel.text = profile.bio
+        
+    }
+        
+    private func updateAvatar() {
+        guard let profileImageURL = profileImageService.avatarURL,
+              let url = URL(string: profileImageURL) else { return }
+        
+        userAvatarImage.kf.indicatorType = .activity
+        let processor = RoundCornerImageProcessor(cornerRadius: 70)
+        userAvatarImage.kf.setImage(with: url,
+                                    placeholder: UIImage(systemName: "person.crop.circle.fill"),
+                                    options: [.processor(processor)]) { result in
+            switch result {
+            case .success(let value):
+                print("Image is loaded: \(value.image)")
+            case .failure(let error):
+                print("Image is not loaded, error is: \(error)")
+            }
+        }
+    }
     
     private func configureUserAvatarImage(avatarImage: UIImage) {
         userAvatarImage = UIImageView(image: avatarImage)
@@ -36,8 +84,7 @@ final class ProfileViewController: UIViewController {
         userAvatarImage.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
     }
     
-    private func configureUserNameLabel(withText name: String) {
-        userNameLabel.text = name
+    private func configureUserNameLabel() {
         userNameLabel.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         userNameLabel.textColor = .ypWhite
         
@@ -48,8 +95,7 @@ final class ProfileViewController: UIViewController {
         userNameLabel.leadingAnchor.constraint(equalTo: userAvatarImage.leadingAnchor).isActive = true
     }
     
-    private func configureUserLoginLabel(withText login: String) {
-        userLoginLabel.text = login
+    private func configureUserLoginLabel() {
         userLoginLabel.font = UIFont.systemFont(ofSize: 13)
         userLoginLabel.textColor = .ypGray
         
@@ -60,8 +106,7 @@ final class ProfileViewController: UIViewController {
         userLoginLabel.leadingAnchor.constraint(equalTo: userAvatarImage.leadingAnchor).isActive = true
     }
     
-    private func configureUserDescriptionLabel(withText description: String) {
-        userDescriptionLabel.text = description
+    private func configureUserDescriptionLabel() {
         userDescriptionLabel.font = UIFont.systemFont(ofSize: 13)
         userDescriptionLabel.textColor = .ypWhite
         
@@ -89,8 +134,8 @@ final class ProfileViewController: UIViewController {
         logOutButton.centerYAnchor.constraint(equalTo: userAvatarImage.centerYAnchor).isActive = true
     }
     
-    @objc 
+    @objc
     private func didTapeLogOutButton() {
-        
+        // TODO: - Add action "exit" from the profile
     }
 }
