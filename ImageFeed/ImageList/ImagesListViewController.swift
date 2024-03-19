@@ -10,6 +10,7 @@ final class ImagesListViewController: UIViewController {
     
     private let photosName: [String] = Array(0..<20).map{ "\($0)"}
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
+    private let imageListService = ImagesListService.shared
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -47,6 +48,12 @@ final class ImagesListViewController: UIViewController {
             viewController.image = image
         } else {
             super.prepare(for: segue, sender: sender)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row + 1 == imageListService.photos.count {
+            imageListService.fetchPhotosNextPage()
         }
     }
 }
