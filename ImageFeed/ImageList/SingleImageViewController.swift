@@ -10,6 +10,7 @@ final class SingleImageViewController: UIViewController {
     
     // MARK: - Properties
     
+    var imageUrl: URL?
     var image: UIImage! {
         didSet {
             guard isViewLoaded else { return }

@@ -19,6 +19,8 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .ypBlack
+        
         configureUserAvatarImage(avatarImage: UIImage(named: "avatar")!)
         configureUserNameLabel()
         configureUserLoginLabel()

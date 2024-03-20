@@ -29,7 +29,7 @@ final class ImagesListCell: UITableViewCell {
         }
         
         cellImage.kf.indicatorType = .activity
-        self.cellImage.kf.setImage(with: url, placeholder: UIImage(named: "stub"))
+        self.cellImage.kf.setImage(with: url, placeholder: UIImage(named: "stub_image"))
     }
     
     func configCell(date: String, isLiked: Bool) {

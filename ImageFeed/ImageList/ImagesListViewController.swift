@@ -12,7 +12,7 @@ final class ImagesListViewController: UIViewController {
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
     private let imagesListService = ImagesListService.shared
     private var photos: [Photo] = []
-    private var imageListServiceObserver: NSObjectProtocol?
+    private var imagesListServiceObserver: NSObjectProtocol?
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -28,7 +28,8 @@ final class ImagesListViewController: UIViewController {
         
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         
-        imageListServiceObserver = NotificationCenter.default
+        imagesListService.fetchPhotosNextPage()
+        imagesListServiceObserver = NotificationCenter.default
             .addObserver(
                 forName: ImagesListService.didChangeNotification,
                 object: nil,
@@ -56,8 +57,8 @@ final class ImagesListViewController: UIViewController {
                 return
             }
             
-            let image = UIImage(named: photosName[indexPath.row])
-            viewController.image = image
+            guard let imageUrl = URL(string: imagesListService.photos[indexPath.row].largeImageURL) else { return }
+            viewController.imageUrl = imageUrl
         } else {
             super.prepare(for: segue, sender: sender)
         }
