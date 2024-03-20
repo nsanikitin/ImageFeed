@@ -61,7 +61,7 @@ final class ProfileViewController: UIViewController {
         userAvatarImage.kf.indicatorType = .activity
         let processor = RoundCornerImageProcessor(cornerRadius: 70)
         userAvatarImage.kf.setImage(with: url,
-                                    placeholder: UIImage(systemName: "person.crop.circle.fill"),
+                                    placeholder: UIImage(named: "stub_user"),
                                     options: [.processor(processor)]) { result in
             switch result {
             case .success(let value):

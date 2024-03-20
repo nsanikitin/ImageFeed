@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class ImagesListCell: UITableViewCell {
     
@@ -15,8 +16,23 @@ final class ImagesListCell: UITableViewCell {
     
     // MARK: - Methods
     
-    func configCell(image: UIImage?, date: String, isLiked: Bool) {
-        cellImage.image = image
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        cellImage.kf.cancelDownloadTask()
+    }
+    
+    func setImage(url: String) {
+        guard let url = URL(string: url) else {
+            assertionFailure("Image URL is not exist")
+            return
+        }
+        
+        cellImage.kf.indicatorType = .activity
+        self.cellImage.kf.setImage(with: url, placeholder: UIImage(named: "stub"))
+    }
+    
+    func configCell(date: String, isLiked: Bool) {
         dateLabel.text = date
         
         let likeImage = isLiked ? UIImage(named: "like_button_on") : UIImage(named: "like_button_off")

@@ -48,7 +48,6 @@ final class ImagesListService {
                     body.forEach { photoResult in
                         self.photos.append(self.convertToPhoto(photoResult: photoResult))
                     }
-                    //self.photos += photos
                     NotificationCenter.default
                         .post(name: ImagesListService.didChangeNotification,
                               object: self)
