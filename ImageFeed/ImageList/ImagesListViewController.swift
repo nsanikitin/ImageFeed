@@ -59,7 +59,7 @@ final class ImagesListViewController: UIViewController {
             }
             
             guard let imageUrl = URL(string: imagesListService.photos[indexPath.row].largeImageURL) else { return }
-            viewController.imageUrl = imageUrl
+            viewController.fullImageURL = imageUrl
         } else {
             super.prepare(for: segue, sender: sender)
         }
@@ -79,7 +79,7 @@ final class ImagesListViewController: UIViewController {
         }
     }
     
-    func showAlertError() {
+    private func showAlertError() {
         alertPresenter = AlertPresenter(viewController: self)
         
         let alertModel = AlertModel(

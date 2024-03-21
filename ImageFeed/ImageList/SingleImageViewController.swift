@@ -1,4 +1,6 @@
 import UIKit
+import ProgressHUD
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
     
@@ -10,7 +12,8 @@ final class SingleImageViewController: UIViewController {
     
     // MARK: - Properties
     
-    var imageUrl: URL?
+    private var alertPresenter: AlertPresenter?
+    var fullImageURL: URL?
     var image: UIImage! {
         didSet {
             guard isViewLoaded else { return }
@@ -25,7 +28,7 @@ final class SingleImageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        imageView.image = image
+        fetchSingleImage()
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
         
@@ -49,6 +52,46 @@ final class SingleImageViewController: UIViewController {
         let x = (newContentSize.width - visibleRectSize.width) / 2
         let y = (newContentSize.height - visibleRectSize.height) / 2
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
+    }
+    
+    private func fetchSingleImage() {
+        UIBlockingProgressHUD.show()
+        
+        imageView.kf.setImage(with: fullImageURL) { [weak self] result in
+            guard let self = self else { return }
+            
+            UIBlockingProgressHUD.dismiss()
+            switch result {
+            case .success(let imageResult):
+                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+            case .failure:
+                self.showAlertError()
+            }
+        }
+    }
+    
+    private func showAlertError() {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так",
+            message: "Попробовать ещё раз?",
+            preferredStyle: .alert
+        )
+        
+        let cancelAction = UIAlertAction(
+            title: "Не надо",
+            style: .default
+        )
+        
+        let addAction = UIAlertAction(
+            title: "Повторить",
+            style: .default
+        ) { _ in
+            self.fetchSingleImage()
+        }
+        
+        alert.addAction(addAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
     }
     
     // MARK: - Actions
