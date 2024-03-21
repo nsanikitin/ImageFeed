@@ -13,6 +13,7 @@ final class ImagesListCell: UITableViewCell {
     // MARK: - Properties
     
     static let reuseIdentifier = "ImagesListCell"
+    weak var delegate: ImagesListCellDelegate?
     
     // MARK: - Methods
     
@@ -32,12 +33,13 @@ final class ImagesListCell: UITableViewCell {
         self.cellImage.kf.setImage(with: url, placeholder: UIImage(named: "stub_image"))
     }
     
-    func configCell(date: String, isLiked: Bool) {
+    func setIsLiked(isLiked: Bool) {
+        likeButton.setImage(UIImage(named: isLiked ? "like_button_on" : "like_button_off"), for: .normal)
+    }
+    
+    func configCell(date: String) {
         dateLabel.text = date
-        
-        let likeImage = isLiked ? UIImage(named: "like_button_on") : UIImage(named: "like_button_off")
-        likeButton.setImage(likeImage, for: .normal)
-        
+        likeButton.setImage(UIImage(named: "like_button_off"), for: .normal)
         configureDateLabelGradient(with: gradientViewOfDateLabel)
     }
     
@@ -54,7 +56,7 @@ final class ImagesListCell: UITableViewCell {
     
     // MARK: - Actions
     
-    
     @IBAction private func likeButtonDidTape(_ sender: Any) {
+        delegate?.imageListCellDidTapLike(self)
     }
 }

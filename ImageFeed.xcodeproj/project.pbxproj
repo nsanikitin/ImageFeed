@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F72289A2BACA4AF00DEC3A5 /* ImageListCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7228992BACA4AF00DEC3A5 /* ImageListCellDelegate.swift */; };
 		4FBFE6852BA9E9CF00D8D992 /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBFE6842BA9E9CF00D8D992 /* ImagesListService.swift */; };
 		4FBFE6872BA9EA4900D8D992 /* ImageListBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBFE6862BA9EA4900D8D992 /* ImageListBody.swift */; };
 		4FC19F052B78F9290079CE9E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC19F042B78F9290079CE9E /* Constants.swift */; };
@@ -42,6 +43,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F7228992BACA4AF00DEC3A5 /* ImageListCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageListCellDelegate.swift; sourceTree = "<group>"; };
 		4FBFE6842BA9E9CF00D8D992 /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
 		4FBFE6862BA9EA4900D8D992 /* ImageListBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageListBody.swift; sourceTree = "<group>"; };
 		4FC19F042B78F9290079CE9E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 			children = (
 				4FF74F322B46EEFC00EFB524 /* ImagesListViewController.swift */,
 				4FCB49B62B66F6FB0041F2E3 /* SingleImageViewController.swift */,
+				4F7228992BACA4AF00DEC3A5 /* ImageListCellDelegate.swift */,
 				4FF74F452B4C56ED00EFB524 /* ImagesListCell.swift */,
 				4FBFE6842BA9E9CF00D8D992 /* ImagesListService.swift */,
 				4FBFE6862BA9EA4900D8D992 /* ImageListBody.swift */,
@@ -292,6 +295,7 @@
 				4FC19F192B8243330079CE9E /* SplashViewController.swift in Sources */,
 				4FC19F0E2B7BDF820079CE9E /* OAuthTokenResponseBody.swift in Sources */,
 				4FE297CA2B9F66D20054CABA /* TabBarController.swift in Sources */,
+				4F72289A2BACA4AF00DEC3A5 /* ImageListCellDelegate.swift in Sources */,
 				4FF74F2F2B46EEFC00EFB524 /* AppDelegate.swift in Sources */,
 				4FC19F072B7913390079CE9E /* AuthViewController.swift in Sources */,
 				4FC19F052B78F9290079CE9E /* Constants.swift in Sources */,

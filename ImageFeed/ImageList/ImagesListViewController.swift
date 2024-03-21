@@ -13,6 +13,7 @@ final class ImagesListViewController: UIViewController {
     private let imagesListService = ImagesListService.shared
     private var photos: [Photo] = []
     private var imagesListServiceObserver: NSObjectProtocol?
+    private var alertPresenter: AlertPresenter?
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -77,6 +78,19 @@ final class ImagesListViewController: UIViewController {
             } completion: { _ in }
         }
     }
+    
+    func showAlertError() {
+        alertPresenter = AlertPresenter(viewController: self)
+        
+        let alertModel = AlertModel(
+            title: "Что-то пошло не так(",
+            message: "Не удалось поставить лайк",
+            buttonText: "Ок",
+            completion: nil
+        )
+        
+        alertPresenter?.showAlert(alertModel: alertModel)
+    }
 }
 
 // MARK: - Extensions
@@ -92,10 +106,10 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
+        imageListCell.delegate = self
         imageListCell.setImage(url: imagesListService.photos[indexPath.row].thumbImageURL)
         let date = dateFormatter.string(from: Date())
-        let isLiked = indexPath.row % 2 == 0
-        imageListCell.configCell(date: date, isLiked: isLiked)
+        imageListCell.configCell(date: date)
         
         return imageListCell
     }
@@ -124,5 +138,26 @@ extension ImagesListViewController: UITableViewDelegate {
         let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
         
         return cellHeight
+    }
+}
+
+extension ImagesListViewController: ImagesListCellDelegate {
+    
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        
+        UIBlockingProgressHUD.show()
+        imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { result in
+            switch result {
+            case .success:
+                self.photos = self.imagesListService.photos
+                cell.setIsLiked(isLiked: self.photos[indexPath.row].isLiked)
+                UIBlockingProgressHUD.dismiss()
+            case .failure:
+                UIBlockingProgressHUD.dismiss()
+                self.showAlertError()
+            }
+        }
     }
 }
