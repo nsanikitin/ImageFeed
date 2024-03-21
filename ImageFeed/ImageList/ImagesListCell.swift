@@ -51,4 +51,10 @@ final class ImagesListCell: UITableViewCell {
         gradientLayer.frame = view.frame
         view.layer.addSublayer(gradientLayer)
     }
+    
+    // MARK: - Actions
+    
+    
+    @IBAction private func likeButtonDidTape(_ sender: Any) {
+    }
 }

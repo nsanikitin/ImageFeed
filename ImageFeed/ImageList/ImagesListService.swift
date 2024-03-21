@@ -66,7 +66,7 @@ final class ImagesListService {
             httpMethod: "GET",
             baseURL: Constants.defaultApiBaseURL
         )
-
+        
         request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         return request
@@ -85,4 +85,63 @@ final class ImagesListService {
     }
     
     // MARK: Like Methods
+    
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<PhotoResult, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        
+        if task != nil {
+            task?.cancel()
+        }
+        
+        guard let token = token else {
+            assertionFailure("A token is not exist!")
+            return
+        }
+        
+        guard let request = changeLikeRequest(id: photoId, isLiked: isLike, token: token)  else {
+            assertionFailure("Invalid profile request")
+            return
+        }
+        
+        let task = urlSession.objectTask(for: request) { [weak self] (response: Result<PhotoResult, Error>) in
+            guard let self = self else { return }
+            
+            switch response {
+            case .success(let body):
+                DispatchQueue.main.async {
+                    if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                        let photo = self.photos[index]
+                        let newPhoto = Photo(
+                            id: photo.id,
+                            size: photo.size,
+                            createdAt: photo.createdAt,
+                            welcomeDescription: photo.welcomeDescription,
+                            thumbImageURL: photo.thumbImageURL,
+                            largeImageURL: photo.largeImageURL,
+                            isLiked: body.likedByUser
+                        )
+                        self.photos[index] = newPhoto
+                    }
+                }
+                completion(.success(body))
+            case .failure(let error):
+                print("[ImagesListService]: \(error.localizedDescription) \(request)")
+                completion(.failure(error))
+            }
+            
+            self.task = nil
+        }
+    }
+    
+    private func changeLikeRequest(id: String, isLiked: Bool, token: String) -> URLRequest? {
+        var request = URLRequest.makeHTTPRequest(
+            path: "/photos/\(id)/like",
+            httpMethod: isLiked ? "POST" : "DELETE",
+            baseURL: Constants.defaultApiBaseURL
+        )
+        
+        request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        return request
+    }
 }
