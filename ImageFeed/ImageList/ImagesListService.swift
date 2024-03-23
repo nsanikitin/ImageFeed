@@ -18,7 +18,7 @@ final class ImagesListService {
         return formatter
     }()
     
-    // MARK: Photo Methods
+    // MARK: - Photo Methods
     
     func fetchPhotosNextPage() {
         let nextPage = (lastLoadedPage ?? 0) + 1
@@ -57,12 +57,13 @@ final class ImagesListService {
             }
             
             self.task = nil
+            self.lastLoadedPage = nextPage
         }
     }
     
     private func photosNextPageRequest(page: Int, token: String) -> URLRequest? {
         var request = URLRequest.makeHTTPRequest(
-            path: "/photos",
+            path: "/photos?page=\(page)",
             httpMethod: "GET",
             baseURL: Constants.defaultApiBaseURL
         )
@@ -84,9 +85,9 @@ final class ImagesListService {
         return convertedPhotos
     }
     
-    // MARK: Like Methods
+    // MARK: - Like Methods
     
-    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<PhotoResult, Error>) -> Void) {
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<LikeResult, Error>) -> Void) {
         assert(Thread.isMainThread)
         
         if task != nil {
@@ -103,7 +104,7 @@ final class ImagesListService {
             return
         }
         
-        let task = urlSession.objectTask(for: request) { [weak self] (response: Result<PhotoResult, Error>) in
+        let task = urlSession.objectTask(for: request) { [weak self] (response: Result<LikeResult, Error>) in
             guard let self = self else { return }
             
             switch response {
@@ -118,7 +119,7 @@ final class ImagesListService {
                             welcomeDescription: photo.welcomeDescription,
                             thumbImageURL: photo.thumbImageURL,
                             largeImageURL: photo.largeImageURL,
-                            isLiked: body.likedByUser
+                            isLiked: !photo.isLiked
                         )
                         self.photos[index] = newPhoto
                     }

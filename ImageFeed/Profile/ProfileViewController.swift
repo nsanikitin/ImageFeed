@@ -1,5 +1,5 @@
-import UIKit
 import Kingfisher
+import UIKit
 
 final class ProfileViewController: UIViewController {
     
@@ -7,13 +7,13 @@ final class ProfileViewController: UIViewController {
     
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
-    private let profileLogoutService = ProfileLogoutService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
+    private lazy var logOutButton: UIButton = UIButton()
     lazy var userAvatarImage: UIImageView = UIImageView()
     lazy var userNameLabel: UILabel = UILabel()
     lazy var userLoginLabel: UILabel = UILabel()
     lazy var userDescriptionLabel: UILabel = UILabel()
-    private lazy var logOutButton: UIButton = UIButton()
-    private var profileImageServiceObserver: NSObjectProtocol?
     
     // MARK: - Lifecycle
     
@@ -34,7 +34,13 @@ final class ProfileViewController: UIViewController {
         }
         
         updateProfileData(profile: profile)
-        
+        addObserver()
+        updateAvatar()
+    }
+    
+    // MARK: - Methods
+    
+    private func addObserver() {
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(
                 forName: ProfileImageService.didChangeNotification,
@@ -44,19 +50,14 @@ final class ProfileViewController: UIViewController {
                 guard let self = self else { return }
                 self.updateAvatar()
             }
-        
-        updateAvatar()
     }
     
-    // MARK: - Methods
-
     private func updateProfileData(profile: Profile) {
         self.userNameLabel.text = profile.name
         self.userLoginLabel.text = profile.loginName
         self.userDescriptionLabel.text = profile.bio
-        
     }
-        
+    
     private func updateAvatar() {
         guard let profileImageURL = profileImageService.avatarURL,
               let url = URL(string: profileImageURL) else { return }
@@ -137,8 +138,34 @@ final class ProfileViewController: UIViewController {
         logOutButton.centerYAnchor.constraint(equalTo: userAvatarImage.centerYAnchor).isActive = true
     }
     
+    private func logoutAlert() {
+        let alert = UIAlertController(title: "Пока, пока!",
+                                      message: "Уверены, что хотите выйти?",
+                                      preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Нет", style: .default)
+        let action = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            ProfileLogoutService.shared.logout()
+            switchToSplashScreen()
+        }
+        alert.addAction(action)
+        alert.addAction(cancelAction)
+        alert.preferredAction = cancelAction
+        present(alert, animated: true)
+    }
+    
+    private func switchToSplashScreen() {
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Invalid Configuration")
+            return
+        }
+        window.rootViewController = SplashViewController()
+    }
+    
+    // MARK: - Actions
+    
     @objc
     private func didTapeLogOutButton() {
-        profileLogoutService.logout()
+        logoutAlert()
     }
 }

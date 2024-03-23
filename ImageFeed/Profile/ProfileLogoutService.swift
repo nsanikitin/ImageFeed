@@ -15,14 +15,13 @@ final class ProfileLogoutService {
         cleanCookies()
         cleanToken()
         cleanUserData()
-        switchToSplash()
     }
     
     private func cleanCookies() {
         HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
         WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
             records.forEach { record in
-                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: { })
             }
         }
     }
@@ -36,13 +35,5 @@ final class ProfileLogoutService {
         profile.userLoginLabel.text = ""
         profile.userDescriptionLabel.text = ""
         profile.userAvatarImage.image = UIImage(named: "stub_user")
-    }
-    
-    private func switchToSplash() {
-        guard let window = UIApplication.shared.windows.first else {
-            assertionFailure("Invalid Configuration")
-            return
-        }
-        window.rootViewController = SplashViewController()
     }
 }

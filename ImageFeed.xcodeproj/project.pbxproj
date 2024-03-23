@@ -121,8 +121,8 @@
 				4FCB49B02B66CAD30041F2E3 /* ProfileViewController.swift */,
 				4FC19F252B86528D0079CE9E /* ProfileService.swift */,
 				4FE297B92B9E30DC0054CABA /* ProfileImageService.swift */,
-				4FC19F292B865B0C0079CE9E /* ProfileBody.swift */,
 				4F72289B2BAF09BB00DEC3A5 /* ProfileLogoutService.swift */,
+				4FC19F292B865B0C0079CE9E /* ProfileBody.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";

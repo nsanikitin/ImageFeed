@@ -17,7 +17,7 @@ final class ImagesListViewController: UIViewController {
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateStyle = .long
+        formatter.dateStyle = .medium
         formatter.timeStyle = .none
         return formatter
     }()
@@ -108,7 +108,8 @@ extension ImagesListViewController: UITableViewDataSource {
         
         imageListCell.delegate = self
         imageListCell.setImage(url: imagesListService.photos[indexPath.row].thumbImageURL)
-        let date = dateFormatter.string(from: Date())
+        
+        let date = dateFormatter.string(from: imagesListService.photos[indexPath.row].createdAt!)
         imageListCell.configCell(date: date)
         
         return imageListCell
@@ -130,7 +131,6 @@ extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         let image = imagesListService.photos[indexPath.row]
-        
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
         let imageWidth = image.size.width
@@ -154,7 +154,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
             switch result {
             case .success(let body):
                 self.photos = self.imagesListService.photos
-                cell.setIsLiked(isLiked: body.likedByUser)
+                cell.setIsLiked(isLiked: !photo.isLiked)
                 UIBlockingProgressHUD.dismiss()
             case .failure(_):
                 UIBlockingProgressHUD.dismiss()

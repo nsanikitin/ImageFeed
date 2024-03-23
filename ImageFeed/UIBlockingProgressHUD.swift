@@ -1,5 +1,5 @@
-import UIKit
 import ProgressHUD
+import UIKit
 
 final class UIBlockingProgressHUD {
     
