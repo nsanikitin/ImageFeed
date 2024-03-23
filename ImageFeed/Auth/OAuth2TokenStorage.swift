@@ -21,4 +21,10 @@ final class OAuth2TokenStorage {
             }
         }
     }
+    
+    // MARK: - Methods
+    
+    func removeToken() {
+        keychainWrapper.removeObject(forKey: accessToken)
+    }
 }

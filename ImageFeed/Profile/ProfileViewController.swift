@@ -7,10 +7,11 @@ final class ProfileViewController: UIViewController {
     
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
-    private lazy var userAvatarImage: UIImageView = UIImageView()
-    private lazy var userNameLabel: UILabel = UILabel()
-    private lazy var userLoginLabel: UILabel = UILabel()
-    private lazy var userDescriptionLabel: UILabel = UILabel()
+    private let profileLogoutService = ProfileLogoutService.shared
+    lazy var userAvatarImage: UIImageView = UIImageView()
+    lazy var userNameLabel: UILabel = UILabel()
+    lazy var userLoginLabel: UILabel = UILabel()
+    lazy var userDescriptionLabel: UILabel = UILabel()
     private lazy var logOutButton: UIButton = UIButton()
     private var profileImageServiceObserver: NSObjectProtocol?
     
@@ -138,6 +139,6 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func didTapeLogOutButton() {
-        // TODO: - Add action "exit" from the profile
+        profileLogoutService.logout()
     }
 }

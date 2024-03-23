@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4F72289A2BACA4AF00DEC3A5 /* ImageListCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7228992BACA4AF00DEC3A5 /* ImageListCellDelegate.swift */; };
+		4F72289C2BAF09BB00DEC3A5 /* ProfileLogoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F72289B2BAF09BB00DEC3A5 /* ProfileLogoutService.swift */; };
 		4FBFE6852BA9E9CF00D8D992 /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBFE6842BA9E9CF00D8D992 /* ImagesListService.swift */; };
 		4FBFE6872BA9EA4900D8D992 /* ImageListBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBFE6862BA9EA4900D8D992 /* ImageListBody.swift */; };
 		4FC19F052B78F9290079CE9E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC19F042B78F9290079CE9E /* Constants.swift */; };
@@ -44,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		4F7228992BACA4AF00DEC3A5 /* ImageListCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageListCellDelegate.swift; sourceTree = "<group>"; };
+		4F72289B2BAF09BB00DEC3A5 /* ProfileLogoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLogoutService.swift; sourceTree = "<group>"; };
 		4FBFE6842BA9E9CF00D8D992 /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
 		4FBFE6862BA9EA4900D8D992 /* ImageListBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageListBody.swift; sourceTree = "<group>"; };
 		4FC19F042B78F9290079CE9E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				4FC19F252B86528D0079CE9E /* ProfileService.swift */,
 				4FE297B92B9E30DC0054CABA /* ProfileImageService.swift */,
 				4FC19F292B865B0C0079CE9E /* ProfileBody.swift */,
+				4F72289B2BAF09BB00DEC3A5 /* ProfileLogoutService.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 				4FC19F122B7BE4710079CE9E /* OAuth2TokenStorage.swift in Sources */,
 				4FC19F1F2B84AABD0079CE9E /* URLRequest.swift in Sources */,
 				4FF74F312B46EEFC00EFB524 /* SceneDelegate.swift in Sources */,
+				4F72289C2BAF09BB00DEC3A5 /* ProfileLogoutService.swift in Sources */,
 				4FC19F2A2B865B0C0079CE9E /* ProfileBody.swift in Sources */,
 				4FC19F242B864F980079CE9E /* UIBlockingProgressHUD.swift in Sources */,
 			);
