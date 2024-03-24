@@ -1,5 +1,5 @@
-import UIKit
 import ProgressHUD
+import UIKit
 
 final class SplashViewController: UIViewController {
     
@@ -53,7 +53,7 @@ final class SplashViewController: UIViewController {
         window.rootViewController = tabBarController
     }
     
-    func showAlertError() {
+    private func showAlertError() {
         alertPresenter = AlertPresenter(viewController: self)
         
         let alertModel = AlertModel(
