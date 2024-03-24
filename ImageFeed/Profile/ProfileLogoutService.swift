@@ -9,6 +9,8 @@ final class ProfileLogoutService {
     private let storage = OAuth2TokenStorage()
     private let profile = ProfileViewController()
     
+    private init() { }
+    
     // MARK: - Methods
     
     func logout() {
