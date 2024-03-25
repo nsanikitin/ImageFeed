@@ -110,9 +110,6 @@ extension ImagesListViewController: UITableViewDataSource {
         imageListCell.setImage(url: imagesListService.photos[indexPath.row].thumbImageURL)
         
         let date = dateFormatter.string(from: imagesListService.photos[indexPath.row].createdAt ?? Date())
-        if date == dateFormatter.string(from: Date()) {
-            assertionFailure("Invalid date")
-        }
         imageListCell.configCell(date: date)
         
         return imageListCell
