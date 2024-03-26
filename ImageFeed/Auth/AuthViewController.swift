@@ -1,5 +1,10 @@
 import UIKit
 
+protocol AuthViewControllerDelegate: AnyObject {
+    
+    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
+}
+
 final class AuthViewController: UIViewController, WebViewViewControllerDelegate {
     
     // MARK: - Properties
@@ -17,7 +22,8 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
                 return
             }
             webViewViewController.delegate = self
-            let webViewPresenter = WebViewPresenter()
+            let authHelper = AuthHelper()
+            let webViewPresenter = WebViewPresenter(authHelper: authHelper)
             webViewViewController.presenter = webViewPresenter
             webViewPresenter.view = webViewViewController
             

@@ -13,7 +13,11 @@ final class OAuth2TokenStorage {
             keychainWrapper.string(forKey: accessToken)
         }
         set {
-            guard let newValue = newValue else { return }
+            guard let newValue = newValue else {
+                assertionFailure("A token new value is invalid")
+                return
+            }
+            
             let isSuccess = keychainWrapper.set(newValue, forKey: accessToken)
             guard isSuccess else {
                 assertionFailure("A token is not saved!")
