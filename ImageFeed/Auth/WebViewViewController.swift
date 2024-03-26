@@ -1,11 +1,12 @@
 import UIKit
 import WebKit
 
-final class WebViewViewController: UIViewController {
+final class WebViewViewController: UIViewController, WebViewViewControllerProtocol {
     
     // MARK: - Properties
     
     weak var delegate: WebViewViewControllerDelegate?
+    var presenter: WebViewPresenterProtocol?
     
     // MARK: - Outlets
     
@@ -19,7 +20,7 @@ final class WebViewViewController: UIViewController {
         super.viewDidLoad()
         
         webView.navigationDelegate = self
-        webViewLoading()
+        //        webViewLoading()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -30,7 +31,7 @@ final class WebViewViewController: UIViewController {
             forKeyPath: #keyPath(WKWebView.estimatedProgress),
             options: .new,
             context: nil)
-        updateProgress()
+        //        updateProgress()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -41,6 +42,10 @@ final class WebViewViewController: UIViewController {
     
     // MARK: - Methods
     
+    func load(request: URLRequest) {
+        webView.load(request)
+    }
+    
     override func observeValue(
         forKeyPath keyPath: String?,
         of object: Any?,
@@ -48,34 +53,42 @@ final class WebViewViewController: UIViewController {
         context: UnsafeMutableRawPointer?
     ) {
         if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            updateProgress()
+            presenter?.didUpdateProgressValue(webView.estimatedProgress)
         } else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
     }
     
-    private func updateProgress() {
-        progressView.progress = Float(webView.estimatedProgress)
-        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
+    func setProgressValue(_ newValue: Float) {
+        progressView.progress = newValue
     }
     
-    private func webViewLoading() {
-        guard var urlComponents = URLComponents(string: Constants.unsplashAuthorizeURLString) else {
-            assertionFailure("Authorize URL is not exist")
-            return
-        }
-        
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: Constants.accessKey),
-            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-            URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: Constants.accessScope)
-        ]
-        let url = urlComponents.url!
-        
-        let request = URLRequest(url: url)
-        webView.load(request)
+    func setProgressHidden(_ isHidden: Bool) {
+        progressView.isHidden = isHidden
     }
+    
+    //    private func updateProgress() {
+    //        progressView.progress = Float(webView.estimatedProgress)
+    //        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
+    //    }
+    
+    //    private func webViewLoading() {
+    //        guard var urlComponents = URLComponents(string: Constants.unsplashAuthorizeURLString) else {
+    //            assertionFailure("Authorize URL is not exist")
+    //            return
+    //        }
+    //
+    //        urlComponents.queryItems = [
+    //            URLQueryItem(name: "client_id", value: Constants.accessKey),
+    //            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
+    //            URLQueryItem(name: "response_type", value: "code"),
+    //            URLQueryItem(name: "scope", value: Constants.accessScope)
+    //        ]
+    //        let url = urlComponents.url!
+    //
+    //        let request = URLRequest(url: url)
+    //        webView.load(request)
+    //    }
     
     // MARK: - Actions
     
@@ -102,16 +115,9 @@ extension WebViewViewController: WKNavigationDelegate {
     }
     
     private func code(from navigationAction: WKNavigationAction) -> String? {
-        if
-            let url = navigationAction.request.url,
-            let urlComponents = URLComponents(string: url.absoluteString),
-            urlComponents.path == "/oauth/authorize/native",
-            let items = urlComponents.queryItems,
-            let codeItem = items.first(where: { $0.name == "code" })
-        {
-            return codeItem.value
-        } else {
-            return nil
+        if let url = navigationAction.request.url {
+            return presenter?.code(from: url)
         }
+        return nil
     }
 }

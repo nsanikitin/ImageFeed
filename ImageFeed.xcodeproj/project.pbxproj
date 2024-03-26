@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F4146A52BB208B700DCECC2 /* WebViewProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4146A42BB208B700DCECC2 /* WebViewProtocols.swift */; };
+		4F4146A72BB2098A00DCECC2 /* WebViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4146A62BB2098A00DCECC2 /* WebViewPresenter.swift */; };
 		4F72289A2BACA4AF00DEC3A5 /* ImageListCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7228992BACA4AF00DEC3A5 /* ImageListCellDelegate.swift */; };
 		4F72289C2BAF09BB00DEC3A5 /* ProfileLogoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F72289B2BAF09BB00DEC3A5 /* ProfileLogoutService.swift */; };
 		4FBFE6852BA9E9CF00D8D992 /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBFE6842BA9E9CF00D8D992 /* ImagesListService.swift */; };
@@ -44,6 +46,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F4146A42BB208B700DCECC2 /* WebViewProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewProtocols.swift; sourceTree = "<group>"; };
+		4F4146A62BB2098A00DCECC2 /* WebViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewPresenter.swift; sourceTree = "<group>"; };
 		4F7228992BACA4AF00DEC3A5 /* ImageListCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageListCellDelegate.swift; sourceTree = "<group>"; };
 		4F72289B2BAF09BB00DEC3A5 /* ProfileLogoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLogoutService.swift; sourceTree = "<group>"; };
 		4FBFE6842BA9E9CF00D8D992 /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
@@ -105,8 +109,10 @@
 			isa = PBXGroup;
 			children = (
 				4FC19F062B7913390079CE9E /* AuthViewController.swift */,
-				4FC19F092B791A0D0079CE9E /* WebViewViewController.swift */,
 				4FC19F1A2B8245AF0079CE9E /* AuthViewControllerDelegate.swift */,
+				4FC19F092B791A0D0079CE9E /* WebViewViewController.swift */,
+				4F4146A62BB2098A00DCECC2 /* WebViewPresenter.swift */,
+				4F4146A42BB208B700DCECC2 /* WebViewProtocols.swift */,
 				4FC19F0B2B7926E80079CE9E /* WebViewViewControllerDelegate.swift */,
 				4FC19F0F2B7BE06C0079CE9E /* OAuth2Service.swift */,
 				4FC19F0D2B7BDF820079CE9E /* OAuthTokenResponseBody.swift */,
@@ -288,12 +294,14 @@
 				4FBFE6852BA9E9CF00D8D992 /* ImagesListService.swift in Sources */,
 				4FF74F332B46EEFC00EFB524 /* ImagesListViewController.swift in Sources */,
 				4FC19F0C2B7926E80079CE9E /* WebViewViewControllerDelegate.swift in Sources */,
+				4F4146A52BB208B700DCECC2 /* WebViewProtocols.swift in Sources */,
 				4FBFE6872BA9EA4900D8D992 /* ImageListBody.swift in Sources */,
 				4FE297BE2B9F51860054CABA /* URLSession.swift in Sources */,
 				4FC19F102B7BE06C0079CE9E /* OAuth2Service.swift in Sources */,
 				4FE297CD2B9F95E60054CABA /* AlertModel.swift in Sources */,
 				4FC19F1B2B8245AF0079CE9E /* AuthViewControllerDelegate.swift in Sources */,
 				4FF74F462B4C56ED00EFB524 /* ImagesListCell.swift in Sources */,
+				4F4146A72BB2098A00DCECC2 /* WebViewPresenter.swift in Sources */,
 				4FCB49B12B66CAD30041F2E3 /* ProfileViewController.swift in Sources */,
 				4FC19F192B8243330079CE9E /* SplashViewController.swift in Sources */,
 				4FC19F0E2B7BDF820079CE9E /* OAuthTokenResponseBody.swift in Sources */,
