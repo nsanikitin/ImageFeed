@@ -35,6 +35,7 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
         super.viewDidLoad()
         
         webView.navigationDelegate = self
+        presenter?.viewDidLoad()
     }
     
     override func viewDidAppear(_ animated: Bool) {
