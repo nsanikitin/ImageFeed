@@ -1,6 +1,12 @@
 import UIKit
 
-final class ImagesListViewController: UIViewController {
+protocol ImageListViewControllerProtocol: AnyObject {
+    
+    var presenter: ImageListViewPresenterProtocol? { get set }
+    func showTableViewAnimate(oldCount: Int, newCount: Int)
+}
+
+final class ImagesListViewController: UIViewController, ImageListViewControllerProtocol {
     
     // MARK: - Outlets
     
@@ -8,10 +14,12 @@ final class ImagesListViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let photosName: [String] = Array(0..<20).map{ "\($0)"}
+    var presenter: ImageListViewPresenterProtocol?
+    var photos: [Photo] = []
+    
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
+    private let photosName: [String] = Array(0..<20).map{ "\($0)"}
     private let imagesListService = ImagesListService.shared
-    private var photos: [Photo] = []
     private var imagesListServiceObserver: NSObjectProtocol?
     private var alertPresenter: AlertPresenter?
     
@@ -27,18 +35,10 @@ final class ImagesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        configureTableView()
         
-        imagesListService.fetchPhotosNextPage()
-        imagesListServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ImagesListService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] notification in
-                guard let self = self else { return }
-                self.updateTableViewAnimated()
-            }
+        presenter?.viewDidLoad()
+        addObserver()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,19 +65,32 @@ final class ImagesListViewController: UIViewController {
         }
     }
     
-    private func updateTableViewAnimated() {
-        let oldCount = photos.count
-        let newCount = imagesListService.photos.count
-        photos = imagesListService.photos
-        if oldCount != newCount {
-            tableView.performBatchUpdates {
-                let indexPaths = (oldCount..<newCount).map { i in
-                    IndexPath(row: i, section: 0)
-                }
-                tableView.insertRows(at: indexPaths, with: .automatic)
-            } completion: { _ in }
-        }
+    private func addObserver() {
+        imagesListServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ImagesListService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] notification in
+                guard let self = self else { return }
+                self.presenter?.updateTableViewAnimated()
+            }
     }
+    
+    private func configureTableView() {
+        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+    }
+    
+    func showTableViewAnimate(oldCount: Int, newCount: Int) {
+        tableView.performBatchUpdates {
+            let indexPaths = (oldCount..<newCount).map { i in
+                IndexPath(row: i, section: 0)
+            }
+            tableView.insertRows(at: indexPaths, with: .automatic)
+        } completion: { _ in }
+    }
+    
+    // MARK: - Alert View
     
     private func showAlertError() {
         alertPresenter = AlertPresenter(viewController: self)
@@ -145,7 +158,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
     
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
-        let photo = photos[indexPath.row]
+        guard let photo = presenter?.photos[indexPath.row] else { return }
         
         UIBlockingProgressHUD.show()
         imagesListService.changeLike(photoId: photo.id, isLike: photo.isLiked) { [weak self] result in
@@ -153,7 +166,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
             
             switch result {
             case .success(let body):
-                self.photos = self.imagesListService.photos
+                presenter?.photos = self.imagesListService.photos
                 cell.setIsLiked(isLiked: !photo.isLiked)
                 UIBlockingProgressHUD.dismiss()
             case .failure(_):

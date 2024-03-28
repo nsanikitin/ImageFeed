@@ -1,7 +1,6 @@
 import Foundation
-import WebKit
 
-public protocol WebViewPresenterProtocol {
+public protocol WebViewPresenterProtocol: AnyObject {
     
     var view: WebViewViewControllerProtocol? { get set }
     
@@ -15,7 +14,7 @@ final class WebViewPresenter: WebViewPresenterProtocol {
     // MARK: - Properties
     
     var view: WebViewViewControllerProtocol?
-    var authHelper: AuthHelperProtocol
+    private var authHelper: AuthHelperProtocol
     
     init(authHelper: AuthHelperProtocol) {
         self.authHelper = authHelper

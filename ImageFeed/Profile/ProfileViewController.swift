@@ -1,19 +1,27 @@
 import Kingfisher
 import UIKit
 
-final class ProfileViewController: UIViewController {
+public protocol ProfileViewControllerProtocol: AnyObject {
+    
+    var presenter: ProfileViewPresenterProtocol? { get set }
+    
+    func updateProfileInfo(name: String, login: String, description: String)
+    func updateUserAvatar(with url: URL)
+    func switchToSplashScreen()
+}
+
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
     
     // MARK: - Properties
     
-    private let profileService = ProfileService.shared
-    private let profileImageService = ProfileImageService.shared
-    private var profileImageServiceObserver: NSObjectProtocol?
+    var presenter: ProfileViewPresenterProtocol?
     
+    private var profileImageServiceObserver: NSObjectProtocol?
     private lazy var logOutButton: UIButton = UIButton()
-    lazy var userAvatarImage: UIImageView = UIImageView()
-    lazy var userNameLabel: UILabel = UILabel()
-    lazy var userLoginLabel: UILabel = UILabel()
-    lazy var userDescriptionLabel: UILabel = UILabel()
+    private lazy var userAvatarImage: UIImageView = UIImageView()
+    private lazy var userNameLabel: UILabel = UILabel()
+    private lazy var userLoginLabel: UILabel = UILabel()
+    private lazy var userDescriptionLabel: UILabel = UILabel()
     
     // MARK: - Lifecycle
     
@@ -21,21 +29,14 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .ypBlack
-        
-        configureUserAvatarImage(avatarImage: UIImage(named: "avatar")!)
+        configureUserAvatarImage()
         configureUserNameLabel()
         configureUserLoginLabel()
         configureUserDescriptionLabel()
-        configureLogOutButton(imageForButton: UIImage(named: "logout_button")!)
+        configureLogOutButton()
         
-        guard let profile = profileService.profile else {
-            assertionFailure("Profile Data is invalid")
-            return
-        }
-        
-        updateProfileData(profile: profile)
+        presenter?.viewDidLoad()
         addObserver()
-        updateAvatar()
     }
     
     // MARK: - Methods
@@ -48,20 +49,24 @@ final class ProfileViewController: UIViewController {
                 queue: .main
             ) { [weak self] notification in
                 guard let self = self else { return }
-                self.updateAvatar()
+                self.presenter?.getUserAvatar()
             }
     }
     
-    private func updateProfileData(profile: Profile) {
-        self.userNameLabel.text = profile.name
-        self.userLoginLabel.text = profile.loginName
-        self.userDescriptionLabel.text = profile.bio
+    func updateProfileInfo(name: String, login: String, description: String) {
+        self.userNameLabel.text = name
+        self.userLoginLabel.text = login
+        self.userDescriptionLabel.text = description
     }
     
-    private func updateAvatar() {
-        guard let profileImageURL = profileImageService.avatarURL,
-              let url = URL(string: profileImageURL) else { return }
-        
+    func removeProfileInfo() {
+        self.userNameLabel.text = ""
+        self.userLoginLabel.text = ""
+        self.userDescriptionLabel.text = ""
+        self.userAvatarImage.image = UIImage(named: "stub_user")
+    }
+    
+    func updateUserAvatar(with url: URL) {
         userAvatarImage.kf.indicatorType = .activity
         let processor = RoundCornerImageProcessor(cornerRadius: 70)
         userAvatarImage.kf.setImage(with: url,
@@ -76,8 +81,18 @@ final class ProfileViewController: UIViewController {
         }
     }
     
-    private func configureUserAvatarImage(avatarImage: UIImage) {
-        userAvatarImage = UIImageView(image: avatarImage)
+    func switchToSplashScreen() {
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Invalid Configuration")
+            return
+        }
+        window.rootViewController = SplashViewController()
+    }
+    
+    // MARK: - View Configuration
+    
+    private func configureUserAvatarImage() {
+        userAvatarImage = UIImageView(image: UIImage(named: "stub_user")!)
         userAvatarImage.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(userAvatarImage)
         
@@ -121,9 +136,9 @@ final class ProfileViewController: UIViewController {
         userDescriptionLabel.leadingAnchor.constraint(equalTo: userAvatarImage.leadingAnchor).isActive = true
     }
     
-    private func configureLogOutButton(imageForButton: UIImage) {
+    private func configureLogOutButton() {
         logOutButton = UIButton.systemButton(
-            with: imageForButton,
+            with: UIImage(named: "logout_button")!,
             target: self,
             action: #selector(didTapeLogOutButton)
         )
@@ -138,15 +153,16 @@ final class ProfileViewController: UIViewController {
         logOutButton.centerYAnchor.constraint(equalTo: userAvatarImage.centerYAnchor).isActive = true
     }
     
-    private func logoutAlert() {
+    // MARK: - Alert View
+    
+    private func showLogoutAlert() {
         let alert = UIAlertController(title: "Пока, пока!",
                                       message: "Уверены, что хотите выйти?",
                                       preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Нет", style: .default)
         let action = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
             guard let self = self else { return }
-            ProfileLogoutService.shared.logout()
-            switchToSplashScreen()
+            self.presenter?.logoutFromProfile()
         }
         alert.addAction(action)
         alert.addAction(cancelAction)
@@ -154,18 +170,10 @@ final class ProfileViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    private func switchToSplashScreen() {
-        guard let window = UIApplication.shared.windows.first else {
-            assertionFailure("Invalid Configuration")
-            return
-        }
-        window.rootViewController = SplashViewController()
-    }
-    
     // MARK: - Actions
     
     @objc
     private func didTapeLogOutButton() {
-        logoutAlert()
+        showLogoutAlert()
     }
 }

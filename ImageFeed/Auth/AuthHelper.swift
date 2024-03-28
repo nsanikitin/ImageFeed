@@ -1,6 +1,6 @@
 import Foundation
 
-protocol AuthHelperProtocol {
+protocol AuthHelperProtocol: AnyObject {
     
     func authRequest() -> URLRequest?
     func code(from url: URL) -> String?
@@ -10,7 +10,7 @@ final class AuthHelper: AuthHelperProtocol {
     
     // MARK: - Properties
     
-    let configuration: AuthConfiguration
+    private let configuration: AuthConfiguration
     
     init(configuration: AuthConfiguration = .standard) {
         self.configuration = configuration
