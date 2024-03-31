@@ -264,6 +264,7 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fnZ-p9-RiS">
                                 <rect key="frame" x="8" y="9" width="48" height="48"/>
+                                <accessibility key="accessibilityConfiguration" identifier="back_button"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="48" id="5sG-dR-Ngi"/>
                                     <constraint firstAttribute="height" constant="48" id="kqt-MI-4cO"/>

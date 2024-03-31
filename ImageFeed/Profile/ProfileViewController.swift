@@ -142,6 +142,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
             target: self,
             action: #selector(didTapeLogOutButton)
         )
+        logOutButton.accessibilityIdentifier = "logout_button"
         
         logOutButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(logOutButton)
