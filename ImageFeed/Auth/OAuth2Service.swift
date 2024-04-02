@@ -1,9 +1,5 @@
 import Foundation
 
-enum AuthServiceError: Error {
-    case invalidRequest
-}
-
 final class OAuth2Service {
     
     // MARK: - Properties
@@ -31,7 +27,7 @@ final class OAuth2Service {
         assert(Thread.isMainThread)
         
         guard lastCode != code else {
-            completion(.failure(AuthServiceError.invalidRequest))
+            completion(.failure(NetworkError.serviceError))
             return
         }
         

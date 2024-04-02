@@ -4,7 +4,7 @@ import SwiftKeychainWrapper
 final class OAuth2TokenStorage {
     
     // MARK: - Properties
-
+    
     private let keychainWrapper = KeychainWrapper.standard
     private let accessToken = ""
     
@@ -13,10 +13,14 @@ final class OAuth2TokenStorage {
             keychainWrapper.string(forKey: accessToken)
         }
         set {
-            guard let newValue = newValue else { return }
+            guard let newValue = newValue else {
+                assertionFailure("The token new value is invalid")
+                return
+            }
+            
             let isSuccess = keychainWrapper.set(newValue, forKey: accessToken)
             guard isSuccess else {
-                assertionFailure("A token is not saved!")
+                assertionFailure("The token is not saved!")
                 return
             }
         }

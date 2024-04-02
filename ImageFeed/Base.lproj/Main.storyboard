@@ -142,6 +142,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FCY-Gx-4Nk">
                                 <rect key="frame" x="16" y="680" width="361" height="48"/>
                                 <color key="backgroundColor" name="YPWhite"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Authenticate"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="2gY-Pu-Zm3"/>
                                 </constraints>
@@ -180,7 +181,7 @@
         <!--Web View View Controller-->
         <scene sceneID="EXh-AJ-Kr1">
             <objects>
-                <viewController id="1ad-Y5-fzA" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewViewController" id="1ad-Y5-fzA" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="n6s-uj-m9c">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -237,7 +238,7 @@
         <!--Single Image View Controller-->
         <scene sceneID="8LA-vb-4AQ">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="bWh-II-R1E" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SingleImageViewController" modalPresentationStyle="fullScreen" id="bWh-II-R1E" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8Tb-yK-iQM">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -263,6 +264,7 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fnZ-p9-RiS">
                                 <rect key="frame" x="8" y="9" width="48" height="48"/>
+                                <accessibility key="accessibilityConfiguration" identifier="back_button"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="48" id="5sG-dR-Ngi"/>
                                     <constraint firstAttribute="height" constant="48" id="kqt-MI-4cO"/>
@@ -327,7 +329,7 @@
         <!--Navigation Controller-->
         <scene sceneID="CqY-ZO-vQq">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0Ix-nt-rW2" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationController" automaticallyAdjustsScrollViewInsets="NO" id="0Ix-nt-rW2" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="PjN-rP-df3"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="npM-md-SVt">

@@ -1,5 +1,10 @@
 import UIKit
 
+protocol AuthViewControllerDelegate: AnyObject {
+    
+    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
+}
+
 final class AuthViewController: UIViewController, WebViewViewControllerDelegate {
     
     // MARK: - Properties
@@ -16,6 +21,11 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
                 assertionFailure("Failed to prepare for \(showWebViewViewControllerIdentifier)")
                 return
             }
+
+            let authHelper = AuthHelper()
+            let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+            webViewViewController.presenter = webViewPresenter
+            webViewPresenter.view = webViewViewController
             webViewViewController.delegate = self
             
         } else {

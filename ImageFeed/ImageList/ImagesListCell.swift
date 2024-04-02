@@ -1,6 +1,11 @@
 import Kingfisher
 import UIKit
 
+protocol ImagesListCellDelegate: AnyObject {
+    
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
+
 final class ImagesListCell: UITableViewCell {
     
     // MARK: - Outlets
