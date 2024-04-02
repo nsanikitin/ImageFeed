@@ -31,7 +31,15 @@ struct AuthConfiguration {
                                  defaultApiBaseURL: Constants.defaultApiBaseURL)
     }
     
-    init(accessKey: String, secretKey: String, redirectURI: String, accessScope: String, authURLString: String, defaultBaseURL: URL, defaultApiBaseURL: URL) {
+    init(
+        accessKey: String,
+        secretKey: String,
+        redirectURI: String,
+        accessScope: String,
+        authURLString: String,
+        defaultBaseURL: URL,
+        defaultApiBaseURL: URL
+    ) {
         self.accessKey = accessKey
         self.secretKey = secretKey
         self.redirectURI = redirectURI
